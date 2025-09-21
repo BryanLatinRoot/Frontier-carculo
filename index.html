@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="styles/style.css"/>
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+    Hello, World!
+  </h1>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de Cable Óptico con Trip y Mínimo Charge</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  table { border-collapse: collapse; width: 70%; margin-top: 20px; }
+  td, th { border: 1px solid #000; padding: 8px; text-align: center; }
+  input[type="number"] { width: 60px; }
+  input[type="text"] { width: 300px; }
+</style>
+</head>
+<body>
+
+<h2>Calculadora de Cable Óptico</h2>
+
+<label>Dirección del trabajo: </label>
+<input type="text" id="direccion" placeholder="Ingrese dirección o GPS"><br><br>
+
+<table>
+  <tr>
+    <th>Concepto</th>
+    <th>Cantidad</th>
+    <th>Precio Unitario</th>
+    <th>Total</th>
+  </tr>
+  <tr>
+    <td>Pies enterrados (BD)</td>
+    <td><input type="number" id="enterrado" value="0"></td>
+    <td>0.47</td>
+    <td id="bd">0</td>
+  </tr>
+  <tr>
+    <td>Pipes (PPO)</td>
+    <td><input type="number" id="pipes" value="0"></td>
+    <td>0.40</td>
+    <td id="ppo">0</td>
+  </tr>
+  <tr>
+    <td>Pies drywall/acera (B)</td>
+    <td><input type="number" id="drywall" value="0"></td>
+    <td>3.04</td>
+    <td id="b">0</td>
+  </tr>
+  <tr>
+    <td><label><input type="checkbox" id="scCheck" checked> SC</label></td>
+    <td>—</td>
+    <td>—</td>
+    <td id="sc">8</td>
+  </tr>
+  <tr>
+    <td><label><input type="checkbox" id="remCheck" checked> REM</label></td>
+    <td>—</td>
+    <td>—</td>
+    <td id="rem">15</td>
+  </tr>
+  <tr>
+    <td><label><input type="checkbox" id="tripCheck"> Trip Charge</label></td>
+    <td>—</td>
+    <td>—</td>
+    <td id="trip">0</td>
+  </tr>
+  <tr>
+    <td><label><input type="checkbox" id="minCheck"> Mínimo Charge</label></td>
+    <td>—</td>
+    <td>—</td>
+    <td id="min">0</td>
+  </tr>
+  <tr>
+    <th colspan="3">Total</th>
+    <th id="total">0</th>
+  </tr>
+</table>
+
+<script>
+function calcular() {
+  const enterrado = parseFloat(document.getElementById('enterrado').value) || 0;
+  const pipes = parseFloat(document.getElementById('pipes').value) || 0;
+  const drywall = parseFloat(document.getElementById('drywall').value) || 0;
+
+  const bd = enterrado * 0.47;
+  const ppo = pipes * 0.40;
+  const b = drywall * 3.04;
+
+  document.getElementById('bd').innerText = bd.toFixed(2);
+  document.getElementById('ppo').innerText = ppo.toFixed(2);
+  document.getElementById('b').innerText = b.toFixed(2);
+
+  const sc = document.getElementById('scCheck').checked ? 8 : 0;
+  const rem = document.getElementById('remCheck').checked ? 15 : 0;
+
+  document.getElementById('sc').innerText = sc.toFixed(2);
+  document.getElementById('rem').innerText = rem.toFixed(2);
+
+  let subtotal = bd + ppo + b + sc + rem;
+
+  // Trip Charge: ajusta subtotal a 27 si se selecciona
+  let trip = 0;
+  if (document.getElementById('tripCheck').checked) {
+    trip = Math.max(27 - subtotal, 0);
+    subtotal += trip;
+  }
+  document.getElementById('trip').innerText = trip.toFixed(2);
+
+  // Mínimo Charge: ajusta subtotal a 45 si se selecciona
+  let min = 0;
+  if (document.getElementById('minCheck').checked) {
+    min = Math.max(45 - subtotal, 0);
+    subtotal += min;
+  }
+  document.getElementById('min').innerText = min.toFixed(2);
+
+  document.getElementById('total').innerText = subtotal.toFixed(2);
+}
+
+// Escuchar cambios en inputs y checkboxes
+['enterrado','pipes','drywall','scCheck','remCheck','tripCheck','minCheck'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcular);
+  document.getElementById(id).addEventListener('change', calcular);
+});
+
+// Calcular al cargar la página
+calcular();
+</script>
+
+</body>
+</html>
